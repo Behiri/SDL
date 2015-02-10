@@ -1,0 +1,48 @@
+#include <SDL.h>
+static void update(int srct)
+{
+  srct = 600 * int(((SDL_GetTicks() / 100) % 6));
+}
+int main(int argc, char* args[])
+{
+	SDL_Window* pWindow = nullptr;
+	SDL_Renderer* pRenderer = nullptr;
+	SDL_Surface* pSurface = nullptr;
+	SDL_Texture* pTexture = nullptr;
+	SDL_Event pEvent;
+	bool running = true;
+
+	pWindow = SDL_CreateWindow("Behiri", 100, 100, 1080, 720, 0);
+	pRenderer = SDL_CreateRenderer(pWindow, -1, 0);
+
+	pSurface = SDL_LoadBMP("animate.bmp");
+	pTexture = SDL_CreateTextureFromSurface(pRenderer, pSurface);
+	SDL_FreeSurface(pSurface);
+	SDL_Rect sRect, dRect;
+	sRect.h = 60;
+	sRect.w = 100;
+	int src[6] ={0, 100, 200, 300, 400, 500};
+	sRect.x = dRect.x = 0;
+	sRect.y = dRect.y = 0;
+	dRect.w = sRect.w;
+	dRect.h = sRect.h;
+	update(sRect.x);
+	while(running){
+		SDL_PollEvent(&pEvent);
+		switch (pEvent.type)
+		{
+		case SDL_QUIT:
+			running = false;
+			break;
+		}
+		for(int i = 0; i <= 6; i++){
+			sRect.x = src[i];
+			SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 0);
+			SDL_RenderClear(pRenderer);
+			SDL_RenderCopy(pRenderer, pTexture, &sRect, &dRect);
+			SDL_RenderPresent(pRenderer);
+			SDL_Delay(100);
+		}
+	}
+	return 0;
+}
