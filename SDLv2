@@ -1,0 +1,44 @@
+#include <SDL_image.h>
+
+int main(int argc, char* args[])
+{
+	SDL_Window* pWindow = nullptr;
+	SDL_Renderer* pRenderer = nullptr;
+	SDL_Surface* pSurface = nullptr;
+	SDL_Texture* pTexture = nullptr;
+	SDL_Event pEvent;
+	bool running = true;
+	int arr[4] = {0,70,140,210};
+	pWindow = SDL_CreateWindow("Behiri", 100, 100, 640, 480, 0);
+	pRenderer = SDL_CreateRenderer(pWindow, -1, 0);
+
+	pSurface = IMG_Load("ken.png");
+	pTexture = SDL_CreateTextureFromSurface(pRenderer, pSurface);
+	SDL_FreeSurface(pSurface);
+	SDL_Rect sRect, dRect;
+	sRect.h = 80;
+	sRect.w = 70;
+	sRect.x = 0;
+		dRect.x = 110;
+	sRect.y = 0;
+		dRect.y = 110;
+	dRect.w = sRect.w;
+	dRect.h = sRect.h;
+	while(running){
+		SDL_PollEvent(&pEvent);
+		switch (pEvent.type)
+		{
+		case SDL_QUIT:
+			running = false;
+			break;
+		}
+		for (int i = 0; i < 5; i++){
+			sRect.x = arr[i];
+	SDL_SetRenderDrawColor(pRenderer, 0, 0, 250, 255);
+	SDL_RenderClear(pRenderer);
+	SDL_RenderCopy(pRenderer, pTexture, &sRect, &dRect);
+	SDL_RenderPresent(pRenderer);
+	SDL_Delay(150);
+		}}
+	return 0;
+}
